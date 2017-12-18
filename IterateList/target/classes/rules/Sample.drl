@@ -1,0 +1,32 @@
+package com.sample
+ 
+import com.sample.*;
+import java.util.ArrayList;
+import java.util.List;
+
+
+rule "Platinum Customer"
+salience 100
+lock-on-active true
+
+when
+  gf : GroupsOfFlights( internalGDSKey == "asd1")
+  items : List( size == gf.flights.size() ) from collect ( Flights( marketingCarrier == "AV" ) from gf.flights )
+then
+  gf.setInternalGDSKey("sdk");
+  System.out.println("Flight Key: " + gf.getInternalGDSKey());
+  update(gf);
+end
+
+/**
+rule "Gold Customer"
+salience 50
+lock-on-active true
+when
+  c : Customer()
+  items : List( size > 3 && size < 5) from collect( Stocks( quantity > 10 ) from c.stocks )
+then
+  c.setCustType("Gold");
+  System.out.println("Customer : " + c.getCustId() + " is a Gold Customer");
+  update(c);
+end**/
